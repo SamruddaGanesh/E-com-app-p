@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="card auth-card">
+  <h2 data-i18n="login_title">Login</h2>
+  <form method="post" class="form-grid">
+    <label data-i18n="username">Username</label>
+    <input type="text" name="username" required>
+
+    <label data-i18n="password">Password</label>
+    <input type="password" name="password" required>
+
+    <button type="submit" data-i18n="login_btn">Login</button>
+  </form>
+  <p><span data-i18n="no_account">No account?</span> <a href="{{ url_for('register') }}" data-i18n="nav_register">Register</a></p>
+</section>
+{% endblock %}

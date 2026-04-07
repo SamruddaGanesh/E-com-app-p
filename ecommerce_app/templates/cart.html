@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 data-i18n="cart_title">Your Cart</h2>
+
+{% if cart_items %}
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th data-i18n="product">Product</th>
+          <th data-i18n="price">Price</th>
+          <th data-i18n="qty">Qty</th>
+          <th data-i18n="total">Total</th>
+          <th data-i18n="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart_items %}
+          <tr>
+            <td>{{ item.product.name }}</td>
+            <td>₹{{ '%.2f'|format(item.product.price) }}</td>
+            <td>
+              <form method="post" action="{{ url_for('update_cart', item_id=item.id) }}" class="row gap-sm">
+                <input type="number" name="quantity" min="0" max="{{ item.product.stock }}" value="{{ item.quantity }}">
+                <button type="submit" data-i18n="update">Update</button>
+              </form>
+            </td>
+            <td>₹{{ '%.2f'|format(item.product.price * item.quantity) }}</td>
+            <td>
+              <form method="post" action="{{ url_for('remove_cart_item', item_id=item.id) }}">
+                <button type="submit" class="danger" data-i18n="remove">Remove</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3><span data-i18n="subtotal">Subtotal</span>: ₹{{ '%.2f'|format(subtotal) }}</h3>
+    <form method="post" action="{{ url_for('place_order') }}" class="form-grid">
+      <label data-i18n="address">Delivery Address</label>
+      <textarea name="address" rows="3" required></textarea>
+      <button type="submit" data-i18n="place_order">Place Order</button>
+    </form>
+  </div>
+{% else %}
+  <p data-i18n="cart_empty">Your cart is empty.</p>
+{% endif %}
+{% endblock %}

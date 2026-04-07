@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 data-i18n="products_title">Products</h2>
+<div class="grid products-grid">
+  {% for product in products %}
+    <article class="card product-card">
+      <h3>{{ product.name }}</h3>
+      <p><strong data-i18n="price">Price</strong>: ₹{{ '%.2f'|format(product.price) }}</p>
+      <p><strong data-i18n="stock">Stock</strong>: {{ product.stock }}</p>
+      <form method="post" action="{{ url_for('add_to_cart', product_id=product.id) }}" class="row gap-sm">
+        <input type="number" name="quantity" min="1" max="{{ product.stock }}" value="1" {% if product.stock == 0 %}disabled{% endif %}>
+        <button type="submit" {% if product.stock == 0 %}disabled{% endif %} data-i18n="add_to_cart">Add to Cart</button>
+      </form>
+    </article>
+  {% endfor %}
+</div>
+{% endblock %}

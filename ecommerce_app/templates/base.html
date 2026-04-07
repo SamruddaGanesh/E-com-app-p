@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="app_title">E-Commerce App</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container row between center">
+      <a href="{{ url_for('index') }}" class="brand" data-i18n="app_title">E-Commerce App</a>
+      <nav class="row gap-sm">
+        {% if current_user %}
+          <a href="{{ url_for('index') }}" data-i18n="nav_products">Products</a>
+          <a href="{{ url_for('cart') }}" data-i18n="nav_cart">Cart</a>
+          <a href="{{ url_for('my_orders') }}" data-i18n="nav_orders">My Orders</a>
+          {% if current_user.is_admin %}
+            <a href="{{ url_for('admin_products') }}" data-i18n="nav_admin">Admin</a>
+          {% endif %}
+          <a href="{{ url_for('logout') }}" data-i18n="nav_logout">Logout</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" data-i18n="nav_login">Login</a>
+          <a href="{{ url_for('register') }}" data-i18n="nav_register">Register</a>
+        {% endif %}
+      </nav>
+      <div>
+        <label for="lang-switch" data-i18n="language">Language</label>
+        <select id="lang-switch">
+          <option value="en">English</option>
+          <option value="hi">हिंदी</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <script src="{{ url_for('static', filename='i18n.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 data-i18n="orders_title">My Orders</h2>
+
+{% if orders %}
+  {% for order in orders %}
+    <section class="card">
+      <div class="row between">
+        <h3><span data-i18n="order">Order</span> #{{ order.id }}</h3>
+        <p>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+      </div>
+      <p><strong data-i18n="address">Address</strong>: {{ order.address }}</p>
+      <p><strong data-i18n="total">Total</strong>: ₹{{ '%.2f'|format(order.total_amount) }}</p>
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="product">Product</th>
+            <th data-i18n="price">Price</th>
+            <th data-i18n="qty">Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in order.items %}
+            <tr>
+              <td>{{ item.product_name }}</td>
+              <td>₹{{ '%.2f'|format(item.unit_price) }}</td>
+              <td>{{ item.quantity }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  {% endfor %}
+{% else %}
+  <p data-i18n="orders_empty">No orders yet.</p>
+{% endif %}
+{% endblock %}
